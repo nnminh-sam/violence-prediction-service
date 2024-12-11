@@ -1,13 +1,14 @@
 from pathlib import Path
+from .environment_config import EnvironmentConfig as EnvConfig
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = 'django-insecure-^$#86*+bx16nn3n100(-^0$^u^c7dl!9fv@xdg3hbmfnu#9ne*'
+SECRET_KEY = EnvConfig.SECRET_KEY.value
 
-DEBUG = True
+DEBUG = EnvConfig.DEBUG.value
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -51,8 +52,12 @@ WSGI_APPLICATION = 'violence_prediction.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': EnvConfig.DB_NAME.value,
+        'USER': EnvConfig.DB_USER.value,
+        'PASSWORD': EnvConfig.DB_PASSWORD.value,
+        'HOST': EnvConfig.DB_HOST.value,
+        'PORT': EnvConfig.DB_PORT.value,
     }
 }
 

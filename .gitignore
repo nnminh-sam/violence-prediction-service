@@ -1,2 +1,3 @@
 .venv
 /violence_prediction/.env
+/dataset
