@@ -3,7 +3,6 @@ from .environment_config import EnvironmentConfig as EnvConfig
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 SECRET_KEY = EnvConfig.SECRET_KEY.value
 
 DEBUG = EnvConfig.DEBUG.value
@@ -17,6 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "system.apps.SystemConfig"
 ]
 
 MIDDLEWARE = [
@@ -85,5 +85,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'system/register.css' %}">
+    <link rel="stylesheet" href="{% static 'system/base.css' %}">
+</head>
+<body>
+    <div id="container">
+        <h2>Violence prediction</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div>
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {% for error in form.email.errors %}
+                    <div class="error-content">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div>
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                {% for error in form.password.errors %}
+                    <div class="error-content">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <button type="submit">Login</button>
+
+            {% if form.non_field_errors %}
+                <div class="non-field-errors-container">
+                    <p>Error:</p>
+                    <ul class="error-list">
+                        {% for error in form.non_field_errors %}
+                            <li class="error-content">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <div class="redirects">
+                <p>First time visit us? <a href="{% url 'register' %}">Register here!</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
