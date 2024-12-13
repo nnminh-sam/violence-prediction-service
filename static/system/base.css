@@ -157,7 +157,7 @@ main p {
     }
 
     nav button {
-        width: 95%;
+        width: 94%;
     }
 
     nav:not(.collapsed) {

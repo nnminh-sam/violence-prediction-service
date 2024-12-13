@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'system/base.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>{% block title %}Violence Prediction{% endblock %}</title>
+</head>
+<body>
+    <div id="layout-container">
+        <header>
+            <div class="left-section">
+                <button id="toggle-nav" class="nav-toggle-btn">☰</button>
+                <div class="user-information">
+                    <p class="user-greeting">{{ user.first_name }} {{ user.last_name }}</p>
+                </div>
+            </div>
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" name="logout-btn" class="logout-icon-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </form>
+        </header>
+        <nav id="sidebar">
+            <button>Predictions</button>
+            <button>Applications</button>
+        </nav>
+        <main>
+            {% block content %}
+            <p>Welcome to the content area! Add more information here.</p>
+            {% endblock %}
+        </main>
+    </div>
+
+    <script>
+        const toggleNavButton = document.getElementById('toggle-nav');
+        const layoutContainer = document.getElementById('layout-container');
+        const sidebar = document.getElementById('sidebar');
+
+        toggleNavButton.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            layoutContainer.classList.toggle('nav-collapsed');
+        });
+    </script>
+</body>
+</html>
