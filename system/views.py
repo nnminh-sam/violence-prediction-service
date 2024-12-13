@@ -1,11 +1,23 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login, authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout as auth_logout
 from .forms import RegistrationForm, LoginForm
 
 
+@login_required(login_url='login')
 def home(request):
-    return render(request, 'home.html')
+    user = request.user
+    context = {
+        'user': {
+            'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+        }
+    }
+    return render(request, 'home.html', context)
 
 
 def register(request):
@@ -55,3 +67,8 @@ def user_login(request):
         form = LoginForm()
 
     return render(request, 'login.html', {'form': form})
+
+
+def logout(request):
+    auth_logout(request)
+    return redirect('login')
