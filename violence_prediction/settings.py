@@ -16,7 +16,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "system.apps.SystemConfig"
+    "system.apps.SystemConfig",
+    "predicter.apps.PredicterConfig"
 ]
 
 MIDDLEWARE = [
