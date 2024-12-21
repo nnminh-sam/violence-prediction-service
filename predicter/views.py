@@ -13,7 +13,6 @@ def predict_view(request):
         "uploaded_media": user_uploaded_media
     }
 
-
     """
     Process uploaded file
     1. Generate a random UUID v4 file name for the file.

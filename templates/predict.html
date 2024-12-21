@@ -20,21 +20,20 @@
         </form>
     </div>
     <div class="predicted-media-container">
-        <h3>Your Uploaded Media</h3>
+        <h3>Uploaded</h3>
         <ul>
             {% for media in uploaded_media %}
             <li>
-                <strong>Original Name:</strong> {{ media.original_name }} <br>
-                <strong>Stored Name:</strong> {{ media.name }} <br>
-                <strong>Size:</strong> {{ media.size_bytes }} Bytes <br>
-                <strong>Duration:</strong> {{ media.duration|floatformat:2 }} seconds <br>
-                <strong>Resolution:</strong> {{ media.resolution }} <br>
-                <strong>Path:</strong> {{ media.local_path }}
-
-                <video controls style="max-width: 100%; margin-top: 10px;">
+                <video controls>
                     <source src="{{ media.local_path }}" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
+                <div class="media-details">
+                    <p><strong>Original Name:</strong> {{ media.original_name }}</p>
+                    <p><strong>Stored Name:</strong> {{ media.name }}</p>
+                    <p><strong>Size:</strong> {{ media.size_bytes }} Bytes</p>
+                    <p><strong>Resolution:</strong> {{ media.resolution }}</p>
+                </div>
             </li>
             {% endfor %}
         </ul>
@@ -58,7 +57,6 @@
         }
     }
 
-    // Display an alert if the upload is successful
     document.addEventListener("DOMContentLoaded", () => {
         const successStatus = "{{ status|escapejs }}";
         const successMessage = "{{ message|escapejs }}";
@@ -66,7 +64,6 @@
         if (successStatus === "success") {
             alert(successMessage);
 
-            // Clear the form and reset the preview
             const uploadForm = document.getElementById('upload-form');
             const fileName = document.getElementById('file-name');
             const filePreviewVideo = document.getElementById('file-preview-video');
@@ -75,7 +72,6 @@
             fileName.textContent = 'No file selected';
             filePreviewVideo.style.display = 'none';
 
-            // Clear the URL to prevent form resubmission on refresh
             window.history.replaceState(null, null, window.location.pathname);
         }
     });

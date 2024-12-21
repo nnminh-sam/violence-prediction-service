@@ -35,8 +35,8 @@ class Media(models.Model):
     original_name = models.CharField(max_length=255)
     local_path = models.CharField(max_length=255)
     size_bytes = models.IntegerField()
-    duration = models.FloatField(null=True, blank=True)  # Duration in seconds
-    resolution = models.CharField(max_length=50, null=True, blank=True)  # e.g., '1920x1080'
+    duration = models.FloatField(null=True, blank=True)
+    resolution = models.CharField(max_length=50, null=True, blank=True)
     result = models.CharField(max_length=12, choices=RESULT_CHOICES, default='undefined')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="media")
     deleted_at = models.DateTimeField(null=True, blank=True)
