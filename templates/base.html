@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'system/base.css' %}">
+    <link rel="stylesheet" href="{% static 'predicter/predict.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>{% block title %}Violence Prediction{% endblock %}</title>
 </head>
@@ -25,8 +26,14 @@
             </form>
         </header>
         <nav id="sidebar">
-            <button>Predictions</button>
-            <button>Applications</button>
+            <a href="{% url 'predict' %}" id="predict-tab"
+               class="{% if request.resolver_match.url_name == 'predict' %}active-tab{% endif %}">
+                Predictions
+            </a>
+            <a href="{% url 'application' %}" id="application-tab"
+               class="{% if request.resolver_match.url_name == 'application' %}active-tab{% endif %}">
+                Applications
+            </a>
         </nav>
         <main>
             {% block content %}
@@ -43,6 +50,37 @@
         toggleNavButton.addEventListener('click', () => {
             sidebar.classList.toggle('collapsed');
             layoutContainer.classList.toggle('nav-collapsed');
+        });
+
+        const defaultTab = localStorage.getItem('activeTab') || "predict-tab";
+        const predictTabButton = document.getElementById('predict-tab');
+        const applicationTabButton = document.getElementById('application-tab');
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (defaultTab === 'predict-tab') {
+                updateActiveTab(predictTabButton);
+            } else if (defaultTab === 'application-tab') {
+                updateActiveTab(applicationTabButton);
+            }
+        });
+
+        function updateActiveTab(button) {
+            predictTabButton.classList.remove('active-tab');
+            predictTabButton.disabled = false;
+            applicationTabButton.classList.remove('active-tab');
+            applicationTabButton.disabled = false;
+            button.classList.add('active-tab');
+            button.disabled = true;
+        }
+
+        predictTabButton.addEventListener('click', () => {
+            localStorage.setItem('activeTab', 'predict-tab');
+            updateActiveTab(predictTabButton);
+        });
+
+        applicationTabButton.addEventListener('click', () => {
+            localStorage.setItem('activeTab', 'application-tab');
+            updateActiveTab(applicationTabButton);
         });
     </script>
 </body>

@@ -111,21 +111,41 @@ nav.collapsed button {
     display: none;
 }
 
-nav button {
+nav a {
     background-color: #fff;
     border: none;
-    width: 100%;
+    width: 90%;
     padding: 10px 15px;
     text-align: left;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
 }
 
-nav button:hover {
+nav a:visited {
+    color: black;
+}
+
+nav a:hover {
     background-color: #e0e0e0;
     transform: translateX(5px);
+}
+
+nav .active-tab {
+    background-color: #007bff;
+    color: #fff;
+}
+
+nav .active-tab:visited {
+    background-color: #007bff;
+    color: #fff;
+}
+
+nav .active-tab:hover {
+    background-color: #007bff;
+    color: #fff;
 }
 
 main {

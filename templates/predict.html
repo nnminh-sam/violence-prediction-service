@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Predict Service{% endblock %}
+
+{% block content %}
+
+<div class="prediction-container">
+    <div class="predict-service-container">
+        <form method="post" enctype="multipart/form-data" id="upload-form">
+            {% csrf_token %}
+            <div class="media-upload-container">
+                <label for="file-upload" class="file-upload-label">Choose a file:</label>
+                <input type="file" id="file-upload" name="file-upload" accept="video/*" onchange="previewFile()">
+                <div class="file-preview">
+                    <video id="file-preview-video" controls style="display: none; max-width: 100%;"></video>
+                    <p id="file-name">No file selected</p>
+                </div>
+                <button type="submit" id="upload-button">Upload</button>
+            </div>
+        </form>
+    </div>
+    <div class="predicted-media-container">
+        <!-- Predicted media will appear here -->
+    </div>
+</div>
+
+<script>
+    function previewFile() {
+        const fileInput = document.getElementById('file-upload');
+        const fileName = document.getElementById('file-name');
+        const filePreviewVideo = document.getElementById('file-preview-video');
+        const file = fileInput.files[0];
+
+        if (file) {
+            fileName.textContent = file.name;
+            const fileURL = URL.createObjectURL(file);
+            filePreviewVideo.src = fileURL;
+            filePreviewVideo.style.display = 'block';
+        } else {
+            fileName.textContent = 'No file selected';
+            filePreviewVideo.style.display = 'none';
+        }
+    }
+
+    // Display an alert if the upload is successful
+    document.addEventListener("DOMContentLoaded", () => {
+        const successStatus = "{{ status|escapejs }}";
+        const successMessage = "{{ message|escapejs }}";
+
+        if (successStatus === "success") {
+            alert(successMessage);
+
+            // Clear the form and reset the preview
+            const uploadForm = document.getElementById('upload-form');
+            const fileName = document.getElementById('file-name');
+            const filePreviewVideo = document.getElementById('file-preview-video');
+
+            uploadForm.reset();
+            fileName.textContent = 'No file selected';
+            filePreviewVideo.style.display = 'none';
+
+            // Clear the URL to prevent form resubmission on refresh
+            window.history.replaceState(null, null, window.location.pathname);
+        }
+    });
+</script>
+
+{% endblock %}
