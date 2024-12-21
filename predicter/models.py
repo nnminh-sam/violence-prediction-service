@@ -34,7 +34,7 @@ class Media(models.Model):
     name = models.CharField(max_length=255, unique=True)
     original_name = models.CharField(max_length=255)
     local_path = models.CharField(max_length=255)
-    size_mb = models.IntegerField()
+    size_bytes = models.IntegerField()
     result = models.CharField(max_length=12, choices=RESULT_CHOICES, default='undefined')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="media")
     deleted_at = models.DateTimeField(null=True, blank=True)
