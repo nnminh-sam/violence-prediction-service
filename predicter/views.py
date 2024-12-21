@@ -3,10 +3,13 @@ import uuid
 import ffmpeg
 
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.utils import timezone
+from django.contrib import messages
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives import serialization
 
 from .models import Media, Application
 from .services import frames_extraction, predict_video
@@ -56,7 +59,7 @@ def predict_view(request):
                 name=unique_filename,
                 original_name=uploaded_file.name,
                 local_path=f'{settings.MEDIA_URL}uploads/{unique_filename}',
-                size_bytes=uploaded_file.size,
+                size_byte=uploaded_file.size,
                 duration=duration,
                 resolution=resolution,
                 result="Non Violence" if response.get("predicted_class") == "NonViolence" else "Violence",
@@ -71,6 +74,7 @@ def predict_view(request):
                 "message": "File uploaded successfully!",
                 "uploaded_media": user_uploaded_media
             }
+            print("bug:", user_uploaded_media)
         except Exception as e:
             context = {"status": "error", "message": str(e)}
 
@@ -78,8 +82,57 @@ def predict_view(request):
 
 @login_required
 def applications_view(request):
-    applications = Application.objects.all()
+    applications = Application.objects.all().order_by('-created_at')
     paginator = Paginator(applications, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'application.html', context={'applications': page_obj})
+
+
+def generate_rsa_key_pair():
+    private_key = rsa.generate_private_key(
+        public_exponent=65537,
+        key_size=2048  # Key size in bits
+    )
+
+    # Serialize the private key to PEM format
+    private_key_pem = private_key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=serialization.NoEncryption()
+    ).decode('utf-8')
+
+    # Generate public key
+    public_key = private_key.public_key()
+
+    # Serialize the public key to PEM format
+    public_key_pem = public_key.public_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo
+    ).decode('utf-8')
+
+    return public_key_pem, private_key_pem
+
+@login_required
+def create_application(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+
+        if name and description:
+            public_key, private_key = generate_rsa_key_pair()
+
+            Application.objects.create(
+                name=name,
+                description=description,
+                status='active',
+                public_key=public_key,
+                private_key=private_key,
+                created_at=timezone.now(),
+                user=request.user
+            )
+            messages.success(request, "Application created successfully.")
+        else:
+            messages.error(request, "Both name and description are required.")
+
+    return redirect('/services/applications/')

@@ -68,17 +68,17 @@
 
         if (successStatus === "success") {
             alert(successMessage);
-
-            const uploadForm = document.getElementById('upload-form');
-            const fileName = document.getElementById('file-name');
-            const filePreviewVideo = document.getElementById('file-preview-video');
-
-            uploadForm.reset();
-            fileName.textContent = 'No file selected';
-            filePreviewVideo.style.display = 'none';
-
-            window.history.replaceState(null, null, window.location.pathname);
         }
+        
+        const uploadForm = document.getElementById('upload-form');
+        const fileName = document.getElementById('file-name');
+        const filePreviewVideo = document.getElementById('file-preview-video');
+
+        uploadForm.reset();
+        fileName.textContent = 'No file selected';
+        filePreviewVideo.style.display = 'none';
+
+        window.history.replaceState(null, null, window.location.pathname);
     });
 </script>
 
