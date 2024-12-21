@@ -165,6 +165,16 @@ input[type="file"] {
     align-items: self-start;
 }
 
+.predicted-media-container li p .violence {
+    color: red;
+    font-weight: bold;
+}
+
+.predicted-media-container li p .non_violence {
+    color: green;
+    font-weight: bold;
+}
+
 @media (max-width: 768px) {
     .predict-service-container {
         padding: 15px;

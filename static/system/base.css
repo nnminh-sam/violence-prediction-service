@@ -93,7 +93,7 @@ form .logout-icon-btn:hover {
 
 nav {
     grid-area: sidebar;
-    background-color: #f0f0f0;
+    background-color: #fff;
     padding: 10px 15px;
     display: flex;
     flex-direction: column;
@@ -112,7 +112,7 @@ nav.collapsed button {
 }
 
 nav a {
-    background-color: #fff;
+    background-color: #f0f0f0;
     border: none;
     width: 90%;
     padding: 10px 15px;

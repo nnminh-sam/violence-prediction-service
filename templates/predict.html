@@ -29,10 +29,15 @@
                     Your browser does not support the video tag.
                 </video>
                 <div class="media-details">
+                    <p>
+                        <strong>Predict Result:</strong>
+                        <span class="{{ media.result_slug }} predict-result">{{ media.result }}</span>
+                    </p>
                     <p><strong>Original Name:</strong> {{ media.original_name }}</p>
                     <p><strong>Stored Name:</strong> {{ media.name }}</p>
                     <p><strong>Size:</strong> {{ media.size_bytes }} Bytes</p>
                     <p><strong>Resolution:</strong> {{ media.resolution }}</p>
+                    <p><strong>Uploaded At:</strong> {{ media.created_at }}</p>
                 </div>
             </li>
             {% endfor %}

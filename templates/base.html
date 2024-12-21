@@ -26,12 +26,12 @@
             </form>
         </header>
         <nav id="sidebar">
-            <a href="{% url 'predict' %}" id="predict-tab"
-               class="{% if request.resolver_match.url_name == 'predict' %}active-tab{% endif %}">
+            <a href="{% url 'predictions' %}" id="predictions-tab"
+               class="{% if request.resolver_match.url_name == 'predictions' %}active-tab{% endif %}">
                 Predictions
             </a>
-            <a href="{% url 'application' %}" id="application-tab"
-               class="{% if request.resolver_match.url_name == 'application' %}active-tab{% endif %}">
+            <a href="{% url 'applications' %}" id="applications-tab"
+               class="{% if request.resolver_match.url_name == 'applications' %}active-tab{% endif %}">
                 Applications
             </a>
         </nav>

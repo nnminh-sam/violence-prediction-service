@@ -5,10 +5,13 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import Media
 import ffmpeg
+from .services import frames_extraction, predict_video
 
 @login_required
 def predict_view(request):
-    user_uploaded_media = Media.objects.filter(user=request.user)
+    user_uploaded_media = Media.objects.filter(user=request.user).order_by('-created_at')
+    for media in user_uploaded_media:
+        media.result_slug = media.result.lower().replace(' ', '_')
     context = {
         "uploaded_media": user_uploaded_media
     }
@@ -41,6 +44,9 @@ def predict_view(request):
             video_stream = next((stream for stream in metadata['streams'] if stream['codec_type'] == 'video'), None)
             resolution = f"{video_stream['width']}x{video_stream['height']}" if video_stream else "Unknown"
 
+            # * Use service to predict video
+            response = predict_video(save_path)
+
             # * Save file data into database
             Media.objects.create(
                 name=unique_filename,
@@ -49,10 +55,13 @@ def predict_view(request):
                 size_bytes=uploaded_file.size,
                 duration=duration,
                 resolution=resolution,
+                result="Non Violence" if response.get("predicted_class") == "NonViolence" else "Violence",
                 user=request.user
             )
 
-            user_uploaded_media = Media.objects.filter(user=request.user)
+            user_uploaded_media = Media.objects.filter(user=request.user).order_by('-created_at')
+            for media in user_uploaded_media:
+                media.result_slug = media.result.lower().replace(' ', '_')
             context = {
                 "status": "success",
                 "message": "File uploaded successfully!",

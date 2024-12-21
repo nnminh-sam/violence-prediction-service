@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -14,6 +15,7 @@ class Applications(models.Model):
     private_key = models.CharField(max_length=255, unique=True)
     status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='active')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="applications")
+    created_at = models.DateTimeField(default=timezone.now)
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
@@ -39,6 +41,7 @@ class Media(models.Model):
     resolution = models.CharField(max_length=50, null=True, blank=True)
     result = models.CharField(max_length=12, choices=RESULT_CHOICES, default='undefined')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="media")
+    created_at = models.DateTimeField(default=timezone.now)
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):

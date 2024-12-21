@@ -79,24 +79,16 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
-
+TIME_ZONE = 'Asia/Ho_Chi_Minh'  # Set the correct timezone (Vietnam)
 STATIC_URL = 'static/'
-
 STATICFILES_DIRS = [BASE_DIR / "static"]
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 1 * 60 * 60  # 1 hour in seconds (default)
 SESSION_COOKIE_SECURE = True  # Ensure cookies are sent over HTTPS
 SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to cookies
-
 # Media file settings
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
