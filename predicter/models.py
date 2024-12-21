@@ -35,12 +35,14 @@ class Media(models.Model):
     original_name = models.CharField(max_length=255)
     local_path = models.CharField(max_length=255)
     size_bytes = models.IntegerField()
+    duration = models.FloatField(null=True, blank=True)  # Duration in seconds
+    resolution = models.CharField(max_length=50, null=True, blank=True)  # e.g., '1920x1080'
     result = models.CharField(max_length=12, choices=RESULT_CHOICES, default='undefined')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="media")
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.original_name} ({self.name}) - {self.size_bytes} Bytes"
 
     class Meta:
         db_table = 'media'

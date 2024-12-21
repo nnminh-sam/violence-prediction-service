@@ -20,7 +20,24 @@
         </form>
     </div>
     <div class="predicted-media-container">
-        <!-- Predicted media will appear here -->
+        <h3>Your Uploaded Media</h3>
+        <ul>
+            {% for media in uploaded_media %}
+            <li>
+                <strong>Original Name:</strong> {{ media.original_name }} <br>
+                <strong>Stored Name:</strong> {{ media.name }} <br>
+                <strong>Size:</strong> {{ media.size_bytes }} Bytes <br>
+                <strong>Duration:</strong> {{ media.duration|floatformat:2 }} seconds <br>
+                <strong>Resolution:</strong> {{ media.resolution }} <br>
+                <strong>Path:</strong> {{ media.local_path }}
+
+                <video controls style="max-width: 100%; margin-top: 10px;">
+                    <source src="{{ media.local_path }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
 
@@ -33,8 +50,7 @@
 
         if (file) {
             fileName.textContent = file.name;
-            const fileURL = URL.createObjectURL(file);
-            filePreviewVideo.src = fileURL;
+            filePreviewVideo.src = URL.createObjectURL(file);
             filePreviewVideo.style.display = 'block';
         } else {
             fileName.textContent = 'No file selected';
