@@ -1,10 +1,14 @@
 import os
 import uuid
+import ffmpeg
+
 from django.conf import settings
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from .models import Media
-import ffmpeg
+from django.core.paginator import Paginator
+from django.utils import timezone
+
+from .models import Media, Application
 from .services import frames_extraction, predict_video
 
 @login_required
@@ -74,5 +78,8 @@ def predict_view(request):
 
 @login_required
 def applications_view(request):
-    print("called applications_view")
-    return render(request, 'application.html')
+    applications = Application.objects.all()
+    paginator = Paginator(applications, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'application.html', context={'applications': page_obj})

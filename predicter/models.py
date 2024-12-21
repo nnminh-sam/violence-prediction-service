@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class Applications(models.Model):
+class Application(models.Model):
     STATUS_CHOICES = [
         ('active', 'Active'),
         ('inactive', 'Inactive'),
@@ -41,6 +41,7 @@ class Media(models.Model):
     resolution = models.CharField(max_length=50, null=True, blank=True)
     result = models.CharField(max_length=12, choices=RESULT_CHOICES, default='undefined')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="media")
+    application = models.ForeignKey(Application, null=True, blank=True, on_delete=models.SET_NULL, related_name="media")
     created_at = models.DateTimeField(default=timezone.now)
     deleted_at = models.DateTimeField(null=True, blank=True)
 

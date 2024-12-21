@@ -3,6 +3,46 @@
 {% block title %}Applications{% endblock %}
 
 {% block content %}
-<h1>Applications Page</h1>
-<p>This is the Applications page content.</p>
+<div class="user-application-container">
+    <div>
+        <button class="new-app-btn">New App</button>
+    </div>
+    <div class="application-table">
+        <div class="table-header">
+            <div class="header-item">ID</div>
+            <div class="header-item">Name</div>
+            <div class="header-item">Status</div>
+            <div class="header-item">Created At</div>
+        </div>
+
+        <div class="table-content">
+            {% for application in applications %}
+            <div class="table-row">
+                <div class="row-item">{{ application.id }}</div>
+                <div class="row-item">
+                    <button class="app-detail-btn">
+                        {{ application.name }}
+                    </button>
+                </div>
+                <div class="row-item">{{ application.status }}</div>
+                <div class="row-item">{{ application.created_at|date:"Y-m-d H:i" }}</div>
+            </div>
+            {% empty %}
+            <div class="no-data">No applications found.</div>
+            {% endfor %}
+        </div>
+
+        {% if applications.has_other_pages %}
+        <div class="pagination">
+            {% if applications.has_previous %}
+            <button onclick="window.location.href='?page={{ applications.previous_page_number }}'">Previous</button>
+            {% endif %}
+            <span>Page {{ applications.number }} of {{ applications.paginator.num_pages }}</span>
+            {% if applications.has_next %}
+            <button onclick="window.location.href='?page={{ applications.next_page_number }}'">Next</button>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
