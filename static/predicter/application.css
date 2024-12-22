@@ -60,6 +60,7 @@
     padding: 10px;
     border-top: 1px solid #ddd;
     transition: background-color 0.3s;
+    font-size: 16px;
 }
 
 .table-row:hover {
@@ -104,13 +105,27 @@
 .app-detail-btn {
     background: none;
     border: none;
-    color: #007BFF;
-    text-decoration: underline;
+    color: #333;
     cursor: pointer;
+    font-weight: normal;
+    font-size: 16px;
 }
 
 .app-detail-btn:hover {
-    color: #0056b3;
+    color: #007bff;
+}
+
+.app-status {
+    font-weight: normal;
+}
+
+.app-status .active-status-value {
+    color: #06D001;
+    font-weight: bold;
+}
+
+.app-status .inactive-status-value {
+    color: #FB4141;
 }
 
 .no-data {
@@ -123,6 +138,7 @@
     text-align: center;
     flex-shrink: 0;
     margin-top: auto;
+    padding: 10px;
 }
 
 .pagination button {
@@ -142,7 +158,6 @@
 .pagination span {
     display: inline-block;
     margin: 0 10px;
-    font-weight: bold;
 }
 
 .new-app-form-container {

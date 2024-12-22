@@ -49,6 +49,19 @@
     border: none;
 }
 
+.application-identity-container .activate-btn {
+    background-color: #4CAF50;
+    font-weight: bold;
+    color: white;
+}
+
+.application-identity-container .activate-btn:hover {
+    background-color: #00FF9C;
+    font-weight: bold;
+    border: none;
+    color: #525B44;
+}
+
 .public-key-container {
     margin-top: 10px;
     padding: 10px;

@@ -45,7 +45,13 @@
                         {{ application.name }}
                     </button>
                 </div>
-                <div class="row-item app-status">{{ application.status }}</div>
+                <div class="row-item app-status">
+                    {% if application.status == 'active' %}
+                        <span class="active-status-value">Active</span>
+                    {% else %}
+                        <span class="inactive-status-value">Inactive</span>
+                    {% endif %}
+                </div>
                 <div class="row-item">{{ application.created_at|date:"Y-m-d H:i:s" }}</div>
             </div>
             {% empty %}
