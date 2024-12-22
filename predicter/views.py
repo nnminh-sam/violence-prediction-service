@@ -208,7 +208,17 @@ def create_application(request):
 @login_required
 def application_detail(request, id):
     application = Application.objects.get(id=id)
-    return render(request, 'application-detail.html', context={'application': application})
+    application_loaded_media = Media.objects.filter(application_id=id).order_by('-created_at')
+    for media in application_loaded_media:
+        media.result_slug = media.result.lower().replace(' ', '_')
+    return render(
+        request,
+        template_name='application-detail.html',
+        context={
+            'application': application,
+            'application_loaded_media': application_loaded_media
+        }
+    )
 
 
 @login_required
@@ -270,12 +280,18 @@ def predict_service(request):
                 status=400
             )
 
+        if application.status == 'inactive':
+            return JsonResponse(
+                {"status": "error", "message": "Forbidden application."},
+                status=403
+            )
+
         private_key_pem = application.private_key
 
         is_valid_public_key = validate_public_key(public_key_pem, private_key_pem)
         if not is_valid_public_key:
             return JsonResponse(
-                {"status": "error", "message": "Unauthorized public key"},
+                {"status": "error", "message": "Unauthorized public key."},
                 status=401
             )
 

@@ -1,8 +1,17 @@
 .application-detail-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.application-detail-card {
     background: #fff;
     margin: 0;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 95%;
 }
 
 .application-identity-container {
@@ -17,9 +26,9 @@
 }
 
 .status-indicator {
-    color: #006BFF;
+    color: #06D001;
     margin-left: 10px;
-    border: 1px solid #006BFF;
+    border: 1px solid #06D001;
     padding: 5px 10px;
     border-radius: 3px;
     font-weight: normal;
