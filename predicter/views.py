@@ -136,3 +136,7 @@ def create_application(request):
             messages.error(request, "Both name and description are required.")
 
     return redirect('/services/applications/')
+
+def application_detail(request, id):
+    application = Application.objects.get(id=id)
+    return render(request, 'application-detail.html', context={'application': application})

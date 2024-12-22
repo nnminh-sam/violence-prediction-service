@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="application-detail-container">
+    <div class="application-detail-card">
+        <div class="application-identity-container">
+            <h3>
+                {{ application.name }}
+                {% if application.status == 'active' %}
+                    <span class="active-status-indicator status-indicator">Active</span>
+                {% else %}
+                    <span class="inactive-status-indicator status-indicator">Inactive</span>
+                {% endif %}
+            </h3>
+            {% if application.status == "active" %}
+                <button class="application-status-update-button deactivate-btn">Deactivate</button>
+            {% else %}
+                <button class="application-status-update-button activate-btn">Activate</button>
+            {% endif %}
+        </div>
+        <p>{{ application.description }}</p>
+
+        <div class="public-key-container">
+            <p>{{ application.public_key }}</p>
+            <button>Change key</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

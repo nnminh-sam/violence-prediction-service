@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{% static 'system/base.css' %}">
     <link rel="stylesheet" href="{% static 'predicter/predict.css' %}">
     <link rel="stylesheet" href="{% static 'predicter/application.css' %}">
+    <link rel="stylesheet" href="{% static 'predicter/application-detail.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>{% block title %}Violence Prediction{% endblock %}</title>
 </head>
@@ -27,11 +28,11 @@
             </form>
         </header>
         <nav id="sidebar">
-            <a href="{% url 'predictions' %}" id="predictions-tab"
+            <a href="{% url 'predictions' %}" id="predict-tab"
                class="{% if request.resolver_match.url_name == 'predictions' %}active-tab{% endif %}">
                 Predictions
             </a>
-            <a href="{% url 'applications' %}" id="applications-tab"
+            <a href="{% url 'applications' %}" id="application-tab"
                class="{% if request.resolver_match.url_name == 'applications' %}active-tab{% endif %}">
                 Applications
             </a>
