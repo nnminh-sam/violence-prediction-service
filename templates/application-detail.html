@@ -12,17 +12,23 @@
                     <span class="inactive-status-indicator status-indicator">Inactive</span>
                 {% endif %}
             </h3>
-            {% if application.status == "active" %}
-                <button class="application-status-update-button deactivate-btn">Deactivate</button>
-            {% else %}
-                <button class="application-status-update-button activate-btn">Activate</button>
-            {% endif %}
+            <form method="post" action="{% url 'update-application-status' application.id %}" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="application_id" value="{{ application.id }}">
+                {% if application.status == "active" %}
+                    <input type="hidden" name="status" value="inactive">
+                    <button type="submit" class="application-status-update-button deactivate-btn">Deactivate</button>
+                {% else %}
+                    <input type="hidden" name="status" value="active">
+                    <button type="submit" class="application-status-update-button activate-btn">Activate</button>
+                {% endif %}
+            </form>
         </div>
         <p>{{ application.description }}</p>
 
         <div class="public-key-container">
             <p>{{ application.public_key }}</p>
-            <button>Change key</button>
+            <button onclick="window.location.href='change-key'">Change key</button>
         </div>
     </div>
 </div>
