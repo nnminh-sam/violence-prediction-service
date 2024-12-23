@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'system/base.css' %}">
+    <link rel="stylesheet" href="{% static 'system/home.css' %}">
     <link rel="stylesheet" href="{% static 'predicter/predict.css' %}">
     <link rel="stylesheet" href="{% static 'predicter/application.css' %}">
     <link rel="stylesheet" href="{% static 'predicter/application-detail.css' %}">
@@ -17,7 +18,9 @@
             <div class="left-section">
                 <button id="toggle-nav" class="nav-toggle-btn">☰</button>
                 <div class="user-information">
-                    <p class="user-greeting">{{ user.first_name }} {{ user.last_name }}</p>
+                    <button class="user-greeting" id="home-btn">
+                        {{ user.first_name }} {{ user.last_name }} | <span class="user-email">{{ user.email }}</span>
+                    </button>
                 </div>
             </div>
             <form action="{% url 'logout' %}" method="post" style="display: inline;">
@@ -71,6 +74,9 @@
             predictTabButton.disabled = false;
             applicationTabButton.classList.remove('active-tab');
             applicationTabButton.disabled = false;
+            if (!button) {
+                return;
+            }
             button.classList.add('active-tab');
             button.disabled = true;
         }
@@ -84,6 +90,14 @@
             localStorage.setItem('activeTab', 'application-tab');
             updateActiveTab(applicationTabButton);
         });
+
+        const homeBtn = document.getElementById('home-btn');
+        homeBtn.addEventListener('click', () => {
+            localStorage.removeItem('activeTab');
+            predictTabButton.classList.remove('active-tab');
+            applicationTabButton.classList.remove('active-tab');
+            window.location.href = '{% url 'home' %}'
+        })
     </script>
 </body>
 </html>

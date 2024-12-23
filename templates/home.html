@@ -1,5 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Welcome {{ user.first_name }} {{ user.last_name }} to our site!</h1>
+<div class="home-page-container">
+    <h1>Welcome {{ user.first_name }} {{ user.last_name }} to our site!</h1>
+    <div class="application-detail-card">
+        <p>First name: {{ user.first_name }}</p>
+        <p>Last name: {{ user.last_name }}</p>
+        <p>Username: {{ user.username }}</p>
+        <p>Uploaded media: {{ uploaded_media_count }}</p>
+        <p>Created application: {{ created_application_count }}</p>
+        <p>Last login: {{ user.last_login }}</p>
+        <p>Joined: {{ user.date_joined }}</p>
+    </div>
+</div>
 {% endblock %}

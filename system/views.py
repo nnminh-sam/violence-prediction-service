@@ -3,19 +3,20 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
+
+from predicter.models import Media, Application
 from .forms import RegistrationForm, LoginForm
 
 
 @login_required(login_url='login')
 def home(request):
     user = request.user
+    uploaded_media_count = Media.objects.filter(user=user).count()
+    created_application_count = Application.objects.filter(user=user).count()
     context = {
-        'user': {
-            'username': user.username,
-            'email': user.email,
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-        }
+        'user': user,
+        'uploaded_media_count': uploaded_media_count,
+        'created_application_count': created_application_count
     }
     return render(request, 'home.html', context)
 
