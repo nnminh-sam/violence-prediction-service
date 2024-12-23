@@ -53,14 +53,11 @@ def user_login(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
 
-            # Authenticate the user using Django's authentication system
             user = authenticate(request, username=email, password=password)
             if user is not None:
-                # Log the user in
                 auth_login(request, user)
                 return redirect('home')
             else:
-                # Add error if authentication fails
                 form.add_error(None, "Invalid email or password")
 
     else:

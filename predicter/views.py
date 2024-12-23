@@ -27,7 +27,6 @@ def media_process(file, user, application):
     2. Save the file in chunk to the local file system.
     3. Save the file data in database.
     """
-
     file_extension = os.path.splitext(file.name)[1]
     unique_filename = f"{uuid.uuid4()}{file_extension}"
 
@@ -187,14 +186,30 @@ def create_application(request):
         description = request.POST.get('description')
 
         if name and description:
+            is_existed_name = Application.objects.filter(name=name).exists()
+            if is_existed_name:
+                messages.error(request, "Name already exists.")
+                return redirect('/services/applications/')
+
             public_key, private_key = generate_rsa_key_pair()
+            tries = 0
+            while True:
+                tries += 1
+                is_existed_public_key = Application.objects.filter(public_key=public_key).exists()
+                is_existed_private_key = Application.objects.filter(private_key=private_key).exists()
+                if not is_existed_public_key and not is_existed_private_key:
+                    public_key, private_key = generate_rsa_key_pair()
+                    break
+
+                if tries > 10:
+                    break
 
             Application.objects.create(
                 name=name,
                 description=description,
                 status='active',
-                public_key=public_key,
-                private_key=private_key,
+                public_key=public_key if tries > 10 else None,
+                private_key=private_key if tries > 10 else None,
                 created_at=timezone.now(),
                 user=request.user
             )
@@ -275,32 +290,20 @@ def predict_service(request):
             application = Application.objects.get(id=application_id)
             user = application.user
         except Application.DoesNotExist:
-            return JsonResponse(
-                {"status": "error", "message": "Invalid application ID."},
-                status=400
-            )
+            return JsonResponse({"status": "error", "message": "Invalid application ID."}, status=400)
 
         if application.status == 'inactive':
-            return JsonResponse(
-                {"status": "error", "message": "Forbidden application."},
-                status=403
-            )
+            return JsonResponse({"status": "error", "message": "Forbidden application."}, status=403)
 
         private_key_pem = application.private_key
 
         is_valid_public_key = validate_public_key(public_key_pem, private_key_pem)
         if not is_valid_public_key:
-            return JsonResponse(
-                {"status": "error", "message": "Unauthorized public key."},
-                status=401
-            )
+            return JsonResponse({"status": "error", "message": "Unauthorized public key."}, status=401)
 
         error, data = media_process(uploaded_file, user, application)
         if error is not None:
-            return JsonResponse(
-                {"status": "error", "message": "Cannot process file."},
-                status=400
-            )
+            return JsonResponse({"status": "error", "message": "Cannot process file."}, status=400)
 
         return JsonResponse(
             {
@@ -311,7 +314,4 @@ def predict_service(request):
             },
             status=200
         )
-    return JsonResponse(
-        {"status": "error", "message": "Invalid request or missing file."},
-        status=400
-    )
+    return JsonResponse({"status": "error", "message": "Invalid request or missing file."}, status=400)
